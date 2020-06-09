@@ -1,32 +1,24 @@
 {
-  "name": "csv-to-taskpaper",
+  "name": "ticktick-to-omnifocus",
   "version": "1.0.0",
-  "description": "CSV to Taskpaper",
-  "homepage": "https://github.com/azu/csv-to-taskpaper",
+  "description": "Process TickTick backup format (csv) into TaskPaper format for use in OmniFocus",
+  "homepage": "https://github.com/katesowles/ticktick-to-omnifocus",
   "bugs": {
-    "url": "https://github.com/azu/csv-to-taskpaper/issues"
+    "url": "https://github.com/katesowles/ticktick-to-omnifocus/issues"
   },
   "license": "MIT",
-  "author": "azu",
-  "files": [
-    "bin/",
-    "lib/",
-    "src/"
-  ],
-  "main": "lib/csv-to-taskpaper.js",
-  "directories": {
-    "lib": "lib",
-    "test": "test"
-  },
+  "author": "katesowles",
   "repository": {
     "type": "git",
-    "url": "https://github.com/azu/csv-to-taskpaper.git"
+    "url": "https://github.com/katesowles/ticktick-to-omnifocus.git"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "copy-paste": "^1.3.0",
+    "csvtojson": "^2.0.10",
     "indent-string": "^3.2.0",
-    "moment": "^2.21.0"
+    "luxon": "^1.24.1"
   }
 }
