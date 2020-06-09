@@ -119,27 +119,62 @@ const listTasksByProject = (acc, task) => {
   return acc;
 };
 
-const toContext = (text) => {
-    if (/#[\d\w.-]+/.test(text)) {
-        return text.replace(/#([\d\w.-]+)/g, "@context($1)");
-    }
-    return "";
+////////////////////////////////////////////////////////////////////////////////
+// csv to json conversion //////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+const file = process.argv[2];
+
+// prettier-ignore
+const errors = {
+  path: "\nThe file does not exist, try another path.",
+  extension: "\nThe file does not have a .csv extension, try another path.",
+  format: "\nThe file is either\nA) not valid CSV, or\nB) TickTick's backup format has changed\n\nThe output likely will not be formatted properly, if it works at all.",
 };
 
+// prettier-ignore
+const headers = [ "folderName", "listName", "title", "tags", "content", "isCheckList", "startDate", "dueDate", "reminder", "repeat", "priority", "status", "createdTime", "completedTime", "order", "timezone", "isAllDay", "isFloating", "columnName", "columnOrder", "viewMode" ];
 
-const convert = (item) => {
-    const title = item["Title"];
-    const content = String(item["Content"] || "").split("\n").map(line => {
-        return line.replace(/^-/, "")
-    }).join("\n");
-    const status = item["Status"];
-    const isCompleted = status === 2;
-    const date = item["Completed Time"];
-    const completedTag = date && isCompleted ? `@done(${moment(date).format("YYYY-MM-DD hh:mm")})` : "";
-    return `- ${title.trim()} ${toContext(title)} ${completedTag}
-${indentString(content, 1, "\t")}
-`;
+const reportError = (message) => {
+  console.error("\x1b[31m", errors[message]);
+
+  return;
 };
 
-const results = data.map(item => convert(item));
-console.log(results.join("\n"));
+const convertCsvToJson = (data) => {
+  return convert({ noheader: true, headers }).fromString(data);
+};
+
+const parseJson = (json) => {
+  const headerRowIndex = json.findIndex((task) => {
+    return Object.keys(task)
+      .map((key) => (key === keyToCamelCase(task[key]) ? true : false))
+      .reduce((acc, each) => !!acc && !!each, true);
+  });
+
+  if (headerRowIndex < 0) reportError("format");
+
+  json = json.splice(headerRowIndex + 1);
+
+  const projects = json
+    .sort(sortByProjectAndCreation)
+    .reduce(listTasksByProject, {});
+
+  const results = Object.values(projects)
+    .map((project) => project.join("\n\n"))
+    .join("\n\n");
+
+  copy(results, () => {
+    console.log("\u001b[32m", "\nThe output has been saved to your clipboard.");
+
+    return;
+  });
+};
+
+fs.readFile(file, "utf8", async (err, data) => {
+  if (err) reportError("path");
+  if (path.extname(file) !== ".csv") reportError("extension");
+
+  let result = await convertCsvToJson(data);
+  if (result) parseJson(result);
+});
