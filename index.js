@@ -32,6 +32,64 @@ const keyToCamelCase = (key) => {
     .join("");
 };
 
+////////////////////////////////////////////////////////////////////////////////
+// conversion helpers //////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+// REFERENCE FOR OMNIFOCUS SUPPORT FOR TASKPAPER TAGS:
+// https://support.omnigroup.com/omnifocus-taskpaper-reference/
+
+const tpDone = (item) => {
+  const completed = item.status != 0;
+  const completionDate = reformatDates(item.completedTime, item.timezone);
+  return completed && !!completionDate ? ` @done(${completionDate})` : "";
+};
+
+const tpDefer = (item) => {
+  const deferDate = reformatDates(item.createdTime, item.timezone);
+  return !!deferDate ? ` @defer(${deferDate})` : "";
+};
+
+const tpDue = (item) => {
+  const dueDate = reformatDates(item.dueDate, item.timezone);
+  return !!dueDate ? ` @due(${dueDate})` : "";
+};
+
+const tpFlagged = (item) => {
+  return item.priority > 0 ? " @flagged" : "";
+};
+
+const tpNote = (item) => {
+  return item.content
+    ? cleanupStrings(item.content)
+        .split("\n")
+        .map((line) => `${line.replace(/^-/, "").replace(/^▪/, "")}`)
+        .join("\n")
+    : "";
+};
+
+const tpProject = (item) => {
+  const folder = item.folderName ? cleanupStrings(item.folderName) : "";
+  const list = item.listName ? cleanupStrings(item.listName) : "";
+  return folder || list ? cleanupStrings(`${folder} ${list}`) : "";
+};
+
+const tpRepeat = (item) => {
+  const repeatRule = cleanupStrings(item.repeat, null);
+  return repeatRule ? ` @repeat-method(fixed) @repeat-rule(${repeatRule})` : "";
+};
+
+const tpTags = (item) => {
+  const tags = cleanupStrings(item.tags);
+  const priority = item.priority ? `priority-${item.priority}` : "";
+
+  return tags || priority
+    ? ` @tags(${tags}${tags && priority ? ", " : ""}${priority})`
+    : "";
+};
+
+const tpTitle = (item) => `${cleanupStrings(item.title)}`;
+
 const toContext = (text) => {
     if (/#[\d\w.-]+/.test(text)) {
         return text.replace(/#([\d\w.-]+)/g, "@context($1)");
