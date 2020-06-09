@@ -90,6 +90,35 @@ const tpTags = (item) => {
 
 const tpTitle = (item) => `${cleanupStrings(item.title)}`;
 
+////////////////////////////////////////////////////////////////////////////////
+// organization helpers ////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+const sortByProjectAndCreation = (a, b) => {
+  const aProjectName = cleanupStrings(`${a.folderName} ${a.listName}`);
+  const bProjectName = cleanupStrings(`${b.folderName} ${b.listName}`);
+
+  if (aProjectName < bProjectName) return -1;
+  if (aProjectName > bProjectName) return 1;
+  if (a.createdTime < b.createdTime) return -1;
+  if (a.createdTime > b.createdTime) return 1;
+  return 0;
+};
+
+const listTasksByProject = (acc, task) => {
+  const projectName = tpProject(task).trim();
+  if (!acc[projectName]) acc[projectName] = [`\n${projectName}:`];
+
+  const dates = ` ${tpDefer(task)}${tpDue(task)}${tpDone(task)}`;
+  const meta = ` ${tpFlagged(task)}${tpRepeat(task)}${tpTags(task)}`;
+  const note = indentString(`${tpNote(task)}`, 1, "\t");
+  const each = `\n- ${tpTitle(task)}${dates}${meta}\n${note}`.trim();
+  const output = indentString(each, 1, "\t");
+  acc[projectName].push(output);
+
+  return acc;
+};
+
 const toContext = (text) => {
     if (/#[\d\w.-]+/.test(text)) {
         return text.replace(/#([\d\w.-]+)/g, "@context($1)");
