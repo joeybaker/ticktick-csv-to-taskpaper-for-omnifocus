@@ -21,22 +21,6 @@ TickTick backups DO NOT include file attachments, so they cannot be referenced o
 9. If the converstion did not encounter any obvious errors, you'll see the output `The output has been saved to your clipboard.` in your terminal, and the TaskPaper output will have been saved to your clipboard.
 10. If the conversion was successful, open the OmniFocus application, then open the "Projects" perspective, click below any existing tasks in the body of the view body and paste (on a Mac `⌘-V`, on a PC `control-V`, on via the application menu `Edit > Paste`) -- After a moment or two you should see the Projects list populated with your tasks, including the creating of any Projects (formerly TickTick Folders) they were nested within.
 
-## Changelog
-
-See [Releases page](https://github.com/katesowles/ticktick-to-omnifocus/releases).
-
-## Contributing
-
-Pull requests and stars are always welcome.
-
-For bugs and feature requests, [please create an issue](https://github.com/katesowles/ticktick-to-omnifocus/issues).
-
-1. Fork it!
-2. Create your feature branch: `git checkout -b my-new-feature`
-3. Commit your changes: `git commit -am 'Add some feature'`
-4. Push to the branch: `git push origin my-new-feature`
-5. Submit a pull request :D
-
 ## Author
 
 - [github/katesowles](https://github.com/katesowles)
