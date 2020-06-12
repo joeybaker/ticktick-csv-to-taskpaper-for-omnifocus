@@ -4,6 +4,10 @@ OmniFocus supports TaskPaper import, so this project is configured to take in a 
 
 - [OmniFocus TaskPaper Reference Guide - Support - The Omni Group](https://support.omnigroup.com/omnifocus-taskpaper-reference/ "OmniFocus TaskPaper Reference Guide - Support - The Omni Group")
 
+## Important
+
+TickTick backups DO NOT include file attachments, so they cannot be referenced or included in this conversion to TaskPaper for OmniFocus. You'll need to download/copy files from within the TickTick app directly if you wish to retain them.
+
 ## Usage
 
 1. Login to your TickTick account via the [webapp](https://ticktick.com/webapp).
