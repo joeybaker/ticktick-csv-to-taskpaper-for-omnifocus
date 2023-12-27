@@ -129,33 +129,38 @@ const file = process.argv[2]
 const errors = {
   path: "\nThe file does not exist, try another path.",
   extension: "\nThe file does not have a .csv extension, try another path.",
-  format: "\nThe file is either\nA) not valid CSV, or\nB) TickTick's backup format has changed\n\nThe output likely will not be formatted properly, if it works at all.",
+  version: "\nThis script was designed to support TickTick backup version 7.1. The backup file provided is:"
 };
 
 // prettier-ignore
 const headers = [ "folderName", "listName", "title", "tags", "content", "isCheckList", "startDate", "dueDate", "reminder", "repeat", "priority", "status", "createdTime", "completedTime", "order", "timezone", "isAllDay", "isFloating", "columnName", "columnOrder", "viewMode" ];
 
-const reportError = (message) => {
-  console.error("\x1b[31m", errors[message]);
 
-  return;
-};
+const reportError = (message, arg) => {
+  console.error('\x1b[31m', errors[message], arg)
+
+  return
+}
 
 const convertCsvToJson = (data) => {
-  return convert({ noheader: true, headers }).fromString(data);
-};
+  // first 6 lines of TickTick's backup file are metadata garbage
+  //
+  // "Date: 2023-12-27+0000"
+  // "Version: 7.1"
+  // "Status:
+  // 0 Normal
+  // 1 Completed
+  // 2 Archived"
+  const lines = data.split('\n')
+  lines.shift()
+  if (lines[0] !== '"Version: 7.1"')
+    reportError('version', lines[0].replace('"', ''))
+  lines.splice(0, 5)
+
+  return convert({ noheader: false, headers }).fromString(lines.join('\n'))
+}
 
 const parseJson = (json) => {
-  const headerRowIndex = json.findIndex((task) => {
-    return Object.keys(task)
-      .map((key) => (key === keyToCamelCase(task[key]) ? true : false))
-      .reduce((acc, each) => !!acc && !!each, true);
-  });
-
-  if (headerRowIndex < 0) reportError("format");
-
-  json = json.splice(headerRowIndex + 1);
-
   const projects = json
     .sort(sortByProjectAndCreation)
     .reduce(listTasksByProject, {})
