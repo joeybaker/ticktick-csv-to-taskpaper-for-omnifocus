@@ -133,7 +133,11 @@ const errors = {
 };
 
 // prettier-ignore
-const headers = [ "folderName", "listName", "title", "tags", "content", "isCheckList", "startDate", "dueDate", "reminder", "repeat", "priority", "status", "createdTime", "completedTime", "order", "timezone", "isAllDay", "isFloating", "columnName", "columnOrder", "viewMode" ];
+// old headers
+// const headers = [ "folderName", "listName", "title", "tags", "content", "isCheckList", "startDate", "dueDate", "reminder", "repeat", "priority", "status", "createdTime", "completedTime", "order", "timezone", "isAllDay", "isFloating", "columnName", "columnOrder", "viewMode" ];
+
+// new headers
+const headers=["folderName","listName","title","kind","tags","content","isChecklist","startDate","dueDate","reminder","repeat","priority","status","createdTime","completedTime","order","timezone","isAllDay","isFloating","columnName","columnOrder","viewMode","taskId","parentId"]
 
 
 const reportError = (message, arg) => {
