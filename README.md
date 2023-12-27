@@ -2,7 +2,7 @@
 
 OmniFocus supports TaskPaper import, so this project is configured to take in a TickTick backup CSV file, convert it to TaskPaper, and save the output to the device's clipboard. The clipboard contents can then be pasted into the OmniFocus Project perspective to import all tasks, including the creation of projects (previously TickTick folders).
 
-- [OmniFocus TaskPaper Reference Guide - Support - The Omni Group](https://support.omnigroup.com/omnifocus-taskpaper-reference/ "OmniFocus TaskPaper Reference Guide - Support - The Omni Group")
+- [OmniFocus TaskPaper Reference Guide - Support - The Omni Group](https://support.omnigroup.com/omnifocus-taskpaper-reference/ 'OmniFocus TaskPaper Reference Guide - Support - The Omni Group')
 
 ## Important
 
@@ -21,11 +21,8 @@ TickTick backups DO NOT include file attachments, so they cannot be referenced o
 9. If the converstion did not encounter any obvious errors, you'll see the output `The output has been saved to your clipboard.` in your terminal, and the TaskPaper output will have been saved to your clipboard.
 10. If the conversion was successful, open the OmniFocus application, then open the "Projects" perspective, click below any existing tasks in the body of the view body and paste (on a Mac `⌘-V`, on a PC `control-V`, on via the application menu `Edit > Paste`) -- After a moment or two you should see the Projects list populated with your tasks, including the creating of any Projects (formerly TickTick Folders) they were nested within.
 
-## Author
-
-- [github/katesowles](https://github.com/katesowles)
-- [twitter/kateypical](https://twitter.com/kateypical)
-
 ## License
 
-MIT © katesowles
+MIT © joeybaker
+
+See branch history for authorship
